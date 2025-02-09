@@ -84,6 +84,7 @@ int main()
 	sei();
 	TUNER_DDR = 0xFF;
 	TUNE_OFFSET_DDR |= (1 << ON_TUNE_PORT) | (1 << OVER_TUNED_PORT) | (1 << UNDER_TUNED_PORT);
+	//DDRC = (;
 
     while (1) {
 		double period = (((double)capture)/7812.5);
@@ -93,6 +94,20 @@ int main()
 		octave = (uint16_t)(floor(((double)note)/12.0));
 		uint16_t note_relative = note - (octave*12);
 		double unrounded_relative_note = unrounded_note - note;
+
+		/*if (unrounded_relative_note >= 1.0/4.0 && unrounded_relative_note <= 2.0*(1.0/4.0)) {
+			TUNE_OFFSET_PORT &=	~(1 << ON_TUNE_PORT);
+			TUNE_OFFSET_PORT &=	~(1 << OVER_TUNED_PORT);
+			TUNE_OFFSET_PORT |=	(1 << UNDER_TUNED_PORT);
+		} else if (unrounded_relative_note <= 1.0/4.0 || unrounded_relative_note >= 3.0*(1.0/4.0)) {
+			TUNE_OFFSET_PORT &=	~(1 << UNDER_TUNED_PORT);
+			TUNE_OFFSET_PORT &=	~(1 << OVER_TUNED_PORT);
+			TUNE_OFFSET_PORT |=	(1 << ON_TUNE_PORT);
+		} else if (unrounded_relative_note >= 2.0*(1.0/4.0) && unrounded_relative_note <= 3.0*(1.0/4.0)) {
+			TUNE_OFFSET_PORT &=	~(1 << UNDER_TUNED_PORT);
+			TUNE_OFFSET_PORT &=	~(1 << ON_TUNE_PORT);
+			TUNE_OFFSET_PORT |=	(1 << OVER_TUNED_PORT);
+		}*/
 
 		switch (note_relative) {
 			case A:
